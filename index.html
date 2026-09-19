@@ -3,28 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İyi Ki Doğdun Ablacım!</title>
+    <title>İyi Ki Doğdun Ablacım! 🎉</title>
     <link rel="stylesheet" href="style.css">
     <!-- Konfeti Efekti İçin Kütüphane -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
-    <div class="card">
-        <h1 class="title">🎉 İyi Ki Doğdun Ablacım! 🎂</h1>
-        <p class="subtitle">Dünyanın en harika ablasına özel...</p>
+    <!-- Arka Plan Müzik Kontrolü -->
+    <audio id="bg-music" loop>
+        <!-- Klasörüne muzik.mp3 koyarsan otomatik çalar -->
+        <source src="muzik.mp3" type="audio/mpeg">
+    </audio>
 
-        <!-- Abla Fotoğrafı (Aynı klasöre abla.jpg adında bir fotoğraf koyabilirsin) -->
-        <div class="img-box">
-            <img src="abla.jpg" alt="Ablam" id="profile-img">
+    <div class="card">
+        <div class="music-control" onclick="muzikCalTetikle()">
+            <span id="music-icon">🎵</span>
         </div>
 
-        <p class="message" id="secret-message">
-            Yeni yaşında sağlık, mutluluk ve tüm dileklerinin gerçekleşmesini diliyorum. 
-            İyi ki varsın, iyi ki benim ablamıssın! ❤️
-        </p>
+        <h1 class="title">✨ İyi Ki Doğdun Ablacım! ✨</h1>
+        <p class="subtitle">Dünyanın en tatlı ablasına özel...</p>
 
-        <button id="surprise-btn" onclick="patlatSurprizi()">Sürprizi Gör! 🎁</button>
+        <!-- Fotoğraf Alanı -->
+        <div class="img-box">
+            <img src="abla.jpg" alt="Ablam" id="profile-img" onerror="this.src='https://picsum.photos/200'">
+        </div>
+
+        <!-- Anı Mesajı / Şiir Köşesi -->
+        <div class="message-box">
+            <p id="mesaj">
+                Yeni yaşında sağlık, huzur ve tüm hayallerinin gerçekleşmesini diliyorum. 
+                İyi ki varsın, iyi ki benim ablamıssın! ❤️
+            </p>
+        </div>
+
+        <!-- Sürpriz ve Etkileşim Butonları -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="surprizPatlat()">Sürprizi Gör! 🎁</button>
+            <button class="btn btn-secondary" onclick="konfetiYagmuru()">Konfeti Yağmuru 🎊</button>
+        </div>
+
+        <div class="footer-note">
+            <p>Senin için sevgiyle kodlandı 💻❤️</p>
+        </div>
     </div>
 
     <script src="script.js"></script>
