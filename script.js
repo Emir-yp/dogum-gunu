@@ -2,7 +2,7 @@ const AYAR = {
   isim: "Gonca abla",
 
   // Doğum günü: YIL-AY-GÜN saat. Geçmişse otomatik gelecek yıla kayar.
-  dogumGunu: "2026-10-12T00:00:00",
+  dogumGunu: "2026-09-29T00:00:00",
 
   // Fotoğrafları repoya "foto" klasörü açıp koy, sonra buraya yaz.
   // Fotoğraf yoksa liste boş kalabilir, bölüm yine de düzgün görünür.
