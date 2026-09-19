@@ -5,11 +5,12 @@ const AYAR = {
   dogumGunu: "2026-09-29T00:00:00",
 
   // Fotoğrafları repoya "foto" klasörü açıp koy, sonra buraya yaz.
+  // ÖNEMLİ: dosya adının UZANTISINI da yaz (.jpg, .JPG, .png ne ise).
   // Fotoğraf yoksa liste boş kalabilir, bölüm yine de düzgün görünür.
   fotograflar: [
-    { src: "foto/HEQC7750", yazi: "Sen ve o meşhur bakış" },
-    { src: "foto/IMG_0015", yazi: "Bayram sabahı" },
-    { src: "foto/IMG_1111", yazi: "En sevdiğim kare" }
+    { src: "foto/HEQC7750.JPG", yazi: "Sen ve o meşhur bakış" },
+    { src: "foto/IMG_0015.JPG", yazi: "Bayram sabahı" },
+    { src: "foto/IMG_1111.JPG", yazi: "En sevdiğim kare" }
   ]
 };
 
