@@ -1,91 +1,98 @@
+// Resim Slayt Dizisi (Klasöre resim ekledikçe buraya ekleyebilirsin)
+let resimler = ["abla.jpg", "abla2.jpg", "abla3.jpg"];
+let mevcutResimIndex = 0;
 let muzikCaliniyor = false;
 
-// Sayfa yüklendiğinde otomatik ilk konfeti patlaması
-window.onload = function() {
-    patlatKonfeti(0.6, 80);
-};
+// Sayfa Yüklendiğinde Korumalı Otomatik Konfeti
+window.addEventListener('DOMContentLoaded', (event) => {
+    tryConfetti(0.6, 70);
+});
 
-// Sürpriz Butonu Fonksiyonu
+// Sürpriz Mesaj Değiştirme
 function surprizPatlat() {
-    let mesajOgesi = document.getElementById("mesaj");
-    
-    // Mesaj değiştirme animasyonu
-    mesajOgesi.style.opacity = 0;
-    
-    setTimeout(function() {
-        mesajOgesi.innerHTML = "🌟 <b>SÜRPRİZ!</b><br>Seni çok ama çok seviyorum abla! İyi ki benim ablam olmuşsun, nice mutlu ve birlikte yıllara! 🥰🎂✨";
-        mesajOgesi.style.opacity = 1;
-    }, 200);
+    let mesaj = document.getElementById("mesaj");
+    if (mesaj) {
+        mesaj.style.opacity = 0;
+        setTimeout(() => {
+            mesaj.innerHTML = "🌟 <b>SÜRPRİZ!</b><br>Seni çok seviyorum abla! İyi ki doğdun, iyi ki benim ablamısın! 🥰🎂✨";
+            mesaj.style.opacity = 1;
+        }, 200);
+    }
+    tryConfetti(0.5, 150);
+}
 
-    // Çift taraflı güçlü konfeti patlatma
-    if (typeof confetti === "function") {
-        confetti({
-            particleCount: 100,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 }
-        });
-        confetti({
-            particleCount: 100,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 }
-        });
+// Resim Slayt Değiştirme
+function resimDegistir(yon) {
+    mevcutResimIndex += yon;
+    if (mevcutResimIndex < 0) mevcutResimIndex = resimler.length - 1;
+    if (mevcutResimIndex >= resimler.length) mevcutResimIndex = 0;
+
+    let img = document.getElementById("profile-img");
+    if (img) {
+        img.src = resimler[mevcutResimIndex];
     }
 }
 
-// Konfeti Yağmuru
-function konfetiYagmuru() {
-    let duration = 3 * 1000;
-    let end = Date.now() + duration;
-
-    (function frame() {
-        confetti({
-            particleCount: 3,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 }
-        });
-        confetti({
-            particleCount: 3,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 }
-        });
-
-        if (Date.now() < end) {
-            requestAnimationFrame(frame);
-        }
-    })();
+// Resim Bulunamadığında Çökmeyi Engelleyen Varsayılan Görsel
+function buResimYoksa(element) {
+    element.src = "https://picsum.photos/200"; // Rastgele güzel bir varsayılan görsel
 }
 
-// Yardımcı Konfeti Fonksiyonu
-function patlatKonfeti(yPos, adet) {
+// Gece / Gündüz Modu
+function geceModu() {
+    document.body.classList.toggle("dark-mode");
+}
+
+// Müzik Açma / Kapama Koruması
+function muzikCalTetikle() {
+    let muzik = document.getElementById("bg-music");
+    let ikon = document.getElementById("music-icon");
+
+    if (!muzikCaliniyor) {
+        let playPromise = muzik.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                muzikCaliniyor = true;
+                ikon.innerHTML = "🔊";
+            }).catch(error => {
+                alert("Müzik çalınamadı. Klasörde 'muzik.mp3' dosyasının olduğundan emin ol!");
+            });
+        }
+    } else {
+        muzik.pause();
+        muzikCaliniyor = false;
+        ikon.innerHTML = "🎵";
+    }
+}
+
+// Havai Fişek Efekti
+function havaiFisek() {
+    let count = 200;
+    let defaults = { origin: { y: 0.7 } };
+
+    function fire(particleRatio, opts) {
+        if (typeof confetti === "function") {
+            confetti(Object.assign({}, defaults, opts, {
+                particleCount: Math.floor(count * particleRatio)
+            }));
+        }
+    }
+
+    fire(0.25, { spread: 26, startVelocity: 55 });
+    fire(0.2, { spread: 60 });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+    fire(0.1, { spread: 120, startVelocity: 45 });
+}
+
+// Kütüphane Yüklenemediyse Kodun Çökmesini Önleyen Güvenli Konfeti
+function tryConfetti(yPos, adet) {
     if (typeof confetti === "function") {
         confetti({
             particleCount: adet,
             spread: 70,
             origin: { y: yPos }
         });
-    }
-}
-
-// Müzik Çalma / Durdurma
-function muzikCalTetikle() {
-    let muzik = document.getElementById("bg-music");
-    let ikon = document.getElementById("music-icon");
-
-    if (!muzikCaliniyor) {
-        muzik.play().then(() => {
-            muzikCaliniyor = true;
-            ikon.innerHTML = "🔊";
-        }).catch(err => {
-            alert("Müzik dosyası bulunamadı! Klasöre 'muzik.mp3' eklediğinden emin ol.");
-        });
-    } else {
-        muzik.pause();
-        muzikCaliniyor = false;
-        ikon.innerHTML = "🎵";
     }
 }
 
