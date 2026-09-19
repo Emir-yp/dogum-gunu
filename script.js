@@ -15,11 +15,11 @@ const AYAR = {
   // Kilitli sürpriz sandık: kendi sorunu ve cevabını buraya yaz.
   // Cevap büyük/küçük harfe duyarlı DEĞİL, boşluklar otomatik temizlenir.
   sandik: {
-    soru: "İlk yaz tatilimize hangi şehre gitmiştik?",
+    soru: "En sevdiğim yemek NE (soru zor biliyorum :D)?",
     cevap: "cevabi buraya yaz",
     mesaj:
       "Bunu bulman biraz zamanını aldıysa bile önemli değil — çünkü asıl mesele aramızdaki o anıydı. " +
-      "Seninle geçirdiğim her yıl, bu sandığın içindeki mesajdan daha değerli. İyi ki varsın."
+      "Seninle geçirdiğim her yıl, bu sandığın içindeki mesajdan daha değerli. İyi ki varsın I love you <3."
   }
 };
 
