@@ -1,3 +1,6 @@
+/* ————————————————————————————————
+   AYARLAR — sadece burayı değiştir
+———————————————————————————————— */
 const AYAR = {
   isim: "Gonca abla",
 
@@ -14,7 +17,6 @@ const AYAR = {
 
   // Kilitli sürpriz sandık: kendi sorunu ve cevaplarını buraya yaz.
   // cevaplar bir liste — kaç tane doğru cevap kabul etmek istiyorsan ekleyebilirsin.
-  // Cevap büyük/küçük harfe duyarlı DEĞİL, boşluklar otomatik temizlenir.
   sandik: {
     soru: "En sevdiğim yemek ne (zor sorudur haaa)",
     cevaplar: ["döner", "tavuk döner", "katık", "zurna"],
@@ -449,6 +451,7 @@ const sandikKutu = document.getElementById("sandikKutu");
 
 function sadelestir(metin) {
   return metin
+    .normalize("NFC")
     .trim()
     .toLocaleLowerCase("tr")
     .replace(/[İıI]/g, "i")
@@ -459,6 +462,9 @@ sandikForm.addEventListener("submit", e => {
   e.preventDefault();
   const girilen = sadelestir(sandikCevapKutu.value);
   const dogrular = AYAR.sandik.cevaplar.map(sadelestir);
+
+  console.log("girilen:", JSON.stringify(girilen));
+  console.log("kabul edilenler:", JSON.stringify(dogrular));
 
   if (girilen && dogrular.includes(girilen)) {
     sandikMesaj.textContent = AYAR.sandik.mesaj;
