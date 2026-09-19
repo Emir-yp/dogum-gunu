@@ -1,56 +1,147 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İyi Ki Doğdun Ablacım! 🎉</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Konfeti ve Havai Fişek Kütüphanesi -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gonca ablama</title>
+<meta name="description" content="Gonca ablam için küçük bir doğum günü sayfası.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=Karla:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Arka Plan Müzik -->
-    <audio id="bg-music" loop>
-        <source src="muzik.mp3" type="audio/mpeg">
-    </audio>
+<canvas id="yapraklar" aria-hidden="true"></canvas>
+<canvas id="konfeti" aria-hidden="true"></canvas>
 
-    <div class="card">
-        <!-- Müzik Kutusu -->
-        <div class="music-control" onclick="muzikCalTetikle()" title="Müziği Başlat/Durdur">
-            <span id="music-icon">🎵</span>
-        </div>
+<button class="muzik" id="muzik" type="button" aria-pressed="false">
+  <span class="muzik-ikon" aria-hidden="true">
+    <i></i><i></i><i></i>
+  </span>
+  <span class="muzik-yazi" id="muzikYazi">Müziği aç</span>
+</button>
 
-        <h1 class="title">✨ İyi Ki Doğdun Ablacım! ✨</h1>
-        <p class="subtitle">Dünyanın en harika ablasına özel...</p>
+<main>
 
-        <!-- Fotoğraf Slayt Alanı -->
-        <div class="img-container">
-            <img src="abla.jpg" alt="Ablam" id="profile-img" onerror="buResimYoksa(this)">
-            <button class="slide-btn prev" onclick="resimDegistir(-1)">❮</button>
-            <button class="slide-btn next" onclick="resimDegistir(1)">❯</button>
-        </div>
+  <!-- ——— 1. Açılış: kapalı gonca ——— -->
+  <section class="sahne" id="sahne">
+    <p class="fisilti">bugün senin günün</p>
 
-        <!-- Sürpriz Not Kartı -->
-        <div class="message-box">
-            <p id="mesaj">
-                Yeni yaşında sağlık, huzur ve tüm hayallerinin gerçekleşmesini diliyorum. 
-                İyi ki varsın, iyi ki benim ablamıssın! ❤️
-            </p>
-        </div>
-
-        <!-- İnteraktif Butonlar -->
-        <div class="button-group">
-            <button class="btn btn-primary" onclick="surprizPatlat()">Sürprizi Gör 🎁</button>
-            <button class="btn btn-secondary" onclick="havaiFisek()">Havai Fişek 🎆</button>
-            <button class="btn btn-accent" onclick="geceModu()">Mod Değiştir 🌙</button>
-        </div>
-
-        <div class="footer-note">
-            <p>Kardeşinden sevgilerle 💻❤️</p>
-        </div>
+    <div class="gul-alani">
+      <svg class="gul" id="gul" viewBox="0 0 220 260" role="img" aria-labelledby="gulBaslik">
+        <title id="gulBaslik">Kapalı bir gül goncası</title>
+        <path class="sap" d="M110 132 C110 175 108 200 106 250" fill="none"/>
+        <path class="yaprak-sap" d="M108 190 C80 186 66 170 62 152 C88 150 104 164 108 190 Z"/>
+        <path class="yaprak-sap" d="M109 168 C136 162 148 146 150 128 C124 128 110 142 109 168 Z"/>
+        <g class="tac">
+          <path class="yaprak y1" d="M110 128 C74 124 56 96 62 62 C92 60 112 86 110 128 Z"/>
+          <path class="yaprak y2" d="M110 128 C146 124 164 96 158 62 C128 60 108 86 110 128 Z"/>
+          <path class="yaprak y3" d="M110 130 C82 118 70 84 86 52 C112 62 122 96 110 130 Z"/>
+          <path class="yaprak y4" d="M110 130 C138 118 150 84 134 52 C108 62 98 96 110 130 Z"/>
+        </g>
+        <g class="cekirdek">
+          <path class="ic-yaprak" d="M110 134 C88 126 80 98 92 74 C110 84 120 110 110 134 Z"/>
+          <path class="ic-yaprak" d="M110 134 C132 126 140 98 128 74 C110 84 100 110 110 134 Z"/>
+          <path class="ic-yaprak" d="M110 136 C98 122 98 96 110 78 C122 96 122 122 110 136 Z"/>
+        </g>
+      </svg>
     </div>
 
-    <script src="script.js"></script>
+    <button class="ac" id="ac" type="button">Goncayı aç</button>
+
+    <div class="dilek" id="dilek" hidden>
+      <h1>İyi ki doğdun,<br><span class="isim" id="basIsim">Gonca abla</span></h1>
+      <p>Aşağıda sana hazırladığım bir şeyler var.</p>
+      <a class="in" href="#geri-sayim">Devam et</a>
+    </div>
+  </section>
+
+  <!-- ——— 2. Geri sayım ——— -->
+  <section class="geri-sayim belirsin" id="geri-sayim">
+    <h2 id="sayimBaslik">Doğum gününe kalan</h2>
+    <div class="sayac" id="sayac">
+      <div class="kutu"><strong id="gun">0</strong><span>gün</span></div>
+      <div class="kutu"><strong id="saat">0</strong><span>saat</span></div>
+      <div class="kutu"><strong id="dakika">0</strong><span>dakika</span></div>
+      <div class="kutu"><strong id="saniye">0</strong><span>saniye</span></div>
+    </div>
+    <p class="sayim-not" id="sayimNot">Saymaya devam ediyorum.</p>
+  </section>
+
+  <!-- ——— 3. Pasta ——— -->
+  <section class="pasta-bolum belirsin">
+    <h2>Mumları üfle</h2>
+    <p class="yonerge" id="yonerge">Alevlere dokun, hepsi sönünce dileğini tut.</p>
+
+    <svg class="pasta" id="pasta" viewBox="0 0 320 240" role="img" aria-label="Üzerinde beş mum olan pasta">
+      <g id="mumlar">
+        <g class="mum" data-mum="1"><rect x="70" y="96" width="9" height="42" rx="4"/><ellipse class="alev" cx="74.5" cy="86" rx="7" ry="12"/></g>
+        <g class="mum" data-mum="2"><rect x="110" y="88" width="9" height="50" rx="4"/><ellipse class="alev" cx="114.5" cy="78" rx="7" ry="12"/></g>
+        <g class="mum" data-mum="3"><rect x="150" y="82" width="9" height="56" rx="4"/><ellipse class="alev" cx="154.5" cy="72" rx="7" ry="12"/></g>
+        <g class="mum" data-mum="4"><rect x="190" y="88" width="9" height="50" rx="4"/><ellipse class="alev" cx="194.5" cy="78" rx="7" ry="12"/></g>
+        <g class="mum" data-mum="5"><rect x="230" y="96" width="9" height="42" rx="4"/><ellipse class="alev" cx="234.5" cy="86" rx="7" ry="12"/></g>
+      </g>
+      <path class="krema" d="M52 140 C90 126 230 126 268 140 L268 152 C230 140 90 140 52 152 Z"/>
+      <rect class="kat ust" x="52" y="146" width="216" height="40" rx="10"/>
+      <rect class="kat alt" x="34" y="184" width="252" height="46" rx="12"/>
+      <circle class="seker" cx="90" cy="166" r="4"/><circle class="seker" cx="140" cy="172" r="4"/>
+      <circle class="seker" cx="190" cy="164" r="4"/><circle class="seker" cx="232" cy="172" r="4"/>
+      <circle class="seker" cx="70" cy="204" r="4"/><circle class="seker" cx="128" cy="210" r="4"/>
+      <circle class="seker" cx="186" cy="202" r="4"/><circle class="seker" cx="246" cy="210" r="4"/>
+    </svg>
+
+    <p class="pasta-mesaj" id="pastaMesaj" hidden>Dileğin tuttu. Kimseye söyleme.</p>
+  </section>
+
+  <!-- ——— 4. Mektup ——— -->
+  <section class="mektup belirsin" id="mektup">
+    <h2>Sana birkaç kelime</h2>
+
+    <p>Bu sayfayı sana ben yaptım. Hazır bir kart almak yerine her satırını tek tek yazayım
+    istedim; çünkü senin için ayrılan zamanın da hediyenin bir parçası olduğunu düşünüyorum.</p>
+
+    <p>Bir abla, insanın hayatındaki ilk büyük şanslardan biri oluyor. Sen benim için hem yol
+    gösteren hem de sığınılan taraftın. Bir şeyi beceremediğimde ilk sen fark ettin, becerdiğimde
+    de en çok sen sevindin. Bunların hiçbirini yüksek sesle söylemediğimi biliyorum; bu yüzden
+    bugün burada yazılı dursun.</p>
+
+    <p>Adın gibisin. Gonca, açılmayı bekleyen değil, açılmaya hazırlanan şeydir. Sen hep bir
+    sonraki şeye hazırlanan, öğrenen, toparlayan, ayakta tutan oldun. Bu yıl biraz da senin için
+    açılsın; dilediğin ne varsa yerine gelsin.</p>
+
+    <p>Yeni yaşın sağlıklı, huzurlu ve içi dolu geçsin. Ne istediğini bilen, istediğini de gönül
+    rahatlığıyla isteyen bir yıl olsun. Ben buradayım.</p>
+
+    <p class="imza">Seni çok seven kardeşin</p>
+  </section>
+
+  <!-- ——— 5. Galeri ——— -->
+  <section class="galeri-bolum belirsin">
+    <h2>Birkaç kare</h2>
+    <div class="galeri" id="galeri"></div>
+  </section>
+
+  <!-- ——— 6. Sebepler ——— -->
+  <section class="sebepler belirsin">
+    <h2>Sen olduğun için</h2>
+    <ul>
+      <li>Herkesin unuttuğu ayrıntıyı hatırlayan tek kişi oluşun.</li>
+      <li>Kızdığında bile haklı çıkman, haklı çıkınca da yüzüme vurmaman.</li>
+      <li>Telefonu ilk açan, en son kapatan olman.</li>
+      <li>Bir işi yapacaksan tam yapman, yapmayacaksan hiç başlamaman.</li>
+      <li>Evin kalabalığı senle kalabalık olması.</li>
+    </ul>
+    <p class="not">Bu maddeleri istediğin gibi değiştirebilirsin — ama bence hepsi doğru.</p>
+  </section>
+
+  <footer>
+    <p>Bu sayfa Gonca abla için hazırlandı.</p>
+    <button class="tekrar" id="tekrar" type="button">Konfetiyi tekrar at</button>
+  </footer>
+
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
