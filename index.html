@@ -15,14 +15,15 @@
 <canvas id="yapraklar" aria-hidden="true"></canvas>
 <canvas id="konfeti" aria-hidden="true"></canvas>
 
-<button class="muzik" id="muzik" type="button" aria-pressed="false">
-  <span class="muzik-ikon" aria-hidden="true">
-    <i></i><i></i><i></i>
-  </span>
-  <span class="muzik-yazi" id="muzikYazi">Müziği aç</span>
-</button>
+<div class="muzik-kutu">
+  <button class="muzik" id="muzik" type="button" aria-pressed="false">
+    <span class="muzik-ikon" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="muzik-yazi" id="muzikYazi">Müziği aç</span>
+  </button>
+  <div id="oynatici"></div>
+</div>
 
-<main>
+<main id="yazdirilacak">
 
   <!-- ——— 1. Açılış: kapalı gonca ——— -->
   <section class="sahne" id="sahne">
@@ -50,7 +51,7 @@
 
     <button class="ac" id="ac" type="button">Goncayı aç</button>
 
-    <div class="dilek" id="dilek" hidden>
+    <div class="dilek-mesaji" id="dilek" hidden>
       <h1>İyi ki doğdun,<br><span class="isim" id="basIsim">Gonca abla</span></h1>
       <p>Aşağıda sana hazırladığım bir şeyler var.</p>
       <a class="in" href="#geri-sayim">Devam et</a>
@@ -116,13 +117,48 @@
     <p class="imza">Seni çok seven kardeşin</p>
   </section>
 
-  <!-- ——— 5. Galeri ——— -->
+  <!-- ——— 5. Yıldızlara dilek ——— -->
+  <section class="yildiz-bolum belirsin" id="yildizlar">
+    <h2>Gökyüzüne bir dilek bırak</h2>
+    <p class="yonerge">Bir dilek yaz, gökyüzüne bırak. İstersen boş da bırakabilirsin, yine de yıldız kayar.</p>
+
+    <div class="gokyuzu-cerceve">
+      <canvas id="gokyuzu" aria-hidden="true"></canvas>
+    </div>
+
+    <form class="dilek-form" id="dilekForm">
+      <input type="text" id="dilekMetni" maxlength="60" placeholder="Dileğini yaz (boş da olur)" autocomplete="off">
+      <button type="submit">Gökyüzüne bırak</button>
+    </form>
+
+    <ul class="dilek-listesi" id="dilekListesi" aria-live="polite"></ul>
+  </section>
+
+  <!-- ——— 6. Sürpriz sandık ——— -->
+  <section class="sandik-bolum belirsin" id="sandik">
+    <h2>Küçük bir sandık</h2>
+
+    <div class="sandik" id="sandikKutu">
+      <p class="soru" id="sandikSoru">Soru buraya gelecek</p>
+
+      <form class="sandik-form" id="sandikForm">
+        <input type="text" id="sandikCevapKutu" placeholder="Cevabını yaz" autocomplete="off">
+        <button type="submit">Aç</button>
+      </form>
+
+      <p class="ipucu" id="sandikIpucu" aria-live="polite"></p>
+
+      <div class="sandik-mesaj" id="sandikMesaj" hidden></div>
+    </div>
+  </section>
+
+  <!-- ——— 7. Galeri ——— -->
   <section class="galeri-bolum belirsin">
     <h2>Birkaç kare</h2>
     <div class="galeri" id="galeri"></div>
   </section>
 
-  <!-- ——— 6. Sebepler ——— -->
+  <!-- ——— 8. Sebepler ——— -->
   <section class="sebepler belirsin">
     <h2>Sen olduğun için</h2>
     <ul>
@@ -137,11 +173,15 @@
 
   <footer>
     <p>Bu sayfa Gonca abla için hazırlandı.</p>
-    <button class="tekrar" id="tekrar" type="button">Konfetiyi tekrar at</button>
+    <div class="alt-butonlar">
+      <button class="tekrar" id="tekrar" type="button">Konfetiyi tekrar at</button>
+      <button class="pdf" id="yazdirDugme" type="button">Anı olarak kaydet (PDF)</button>
+    </div>
   </footer>
 
 </main>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script src="script.js"></script>
 </body>
 </html>
