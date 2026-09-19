@@ -7,9 +7,9 @@ const AYAR = {
   // Fotoğrafları repoya "foto" klasörü açıp koy, sonra buraya yaz.
   // Fotoğraf yoksa liste boş kalabilir, bölüm yine de düzgün görünür.
   fotograflar: [
-    { src: "foto/1.jpg", yazi: "Sen ve o meşhur bakış" },
-    { src: "foto/2.jpg", yazi: "Bayram sabahı" },
-    { src: "foto/3.jpg", yazi: "En sevdiğim kare" }
+    { src: "foto/HEQC7750", yazi: "Sen ve o meşhur bakış" },
+    { src: "foto/IMG_0015", yazi: "Bayram sabahı" },
+    { src: "foto/IMG_1111", yazi: "En sevdiğim kare" }
   ]
 };
 
