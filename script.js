@@ -12,14 +12,15 @@ const AYAR = {
     { src: "foto/IMG_1111.JPG", yazi: "En sevdiğim kare" }
   ],
 
-  // Kilitli sürpriz sandık: kendi sorunu ve cevabını buraya yaz.
+  // Kilitli sürpriz sandık: kendi sorunu ve cevaplarını buraya yaz.
+  // cevaplar bir liste — kaç tane doğru cevap kabul etmek istiyorsan ekleyebilirsin.
   // Cevap büyük/küçük harfe duyarlı DEĞİL, boşluklar otomatik temizlenir.
   sandik: {
-    soru: "En sevdiğim yemek NE (soru zor biliyorum :D)?",
-    cevap: "cevabi buraya yaz",
+    soru: "En sevdiğim yemek ne (zor sorudur haaa)",
+    cevaplar: ["döner", "tavuk döner", "katık", "zurna"],
     mesaj:
       "Bunu bulman biraz zamanını aldıysa bile önemli değil — çünkü asıl mesele aramızdaki o anıydı. " +
-      "Seninle geçirdiğim her yıl, bu sandığın içindeki mesajdan daha değerli. İyi ki varsın I love you <3."
+      "Seninle geçirdiğim her yıl, bu sandığın içindeki mesajdan daha değerli. İyi ki varsın."
   }
 };
 
@@ -457,14 +458,14 @@ function sadelestir(metin) {
 sandikForm.addEventListener("submit", e => {
   e.preventDefault();
   const girilen = sadelestir(sandikCevapKutu.value);
-  const dogru = sadelestir(AYAR.sandik.cevap);
+  const dogrular = AYAR.sandik.cevaplar.map(sadelestir);
 
-  if (girilen && girilen === dogru) {
+  if (girilen && dogrular.includes(girilen)) {
     sandikMesaj.textContent = AYAR.sandik.mesaj;
     sandikMesaj.hidden = false;
     sandikForm.hidden = true;
     sandikIpucu.textContent = "";
-    konfetiAt(140);
+    window.requestAnimationFrame(() => konfetiAt(140));
   } else {
     sandikIpucu.textContent = "Olmadı, bir daha dene.";
     sandikKutu.classList.remove("titre");
