@@ -14,6 +14,7 @@
 
 <canvas id="yapraklar" aria-hidden="true"></canvas>
 <canvas id="konfeti" aria-hidden="true"></canvas>
+<canvas id="havaifisek" aria-hidden="true"></canvas>
 
 <div class="muzik-kutu">
   <button class="muzik" id="muzik" type="button" aria-pressed="false">
@@ -29,7 +30,18 @@
   <section class="sahne" id="sahne">
     <p class="fisilti">bugün senin günün</p>
 
-    <div class="gul-alani">
+    <div class="gul-alani" id="gulAlani">
+      <div class="isik-halka" aria-hidden="true"></div>
+
+      <div class="kivilcim-katmani" aria-hidden="true">
+        <span class="kivilcim"></span>
+        <span class="kivilcim"></span>
+        <span class="kivilcim"></span>
+        <span class="kivilcim"></span>
+        <span class="kivilcim"></span>
+        <span class="kivilcim"></span>
+      </div>
+
       <svg class="gul" id="gul" viewBox="0 0 220 260" role="img" aria-labelledby="gulBaslik">
         <title id="gulBaslik">Kapalı bir gül goncası</title>
         <path class="sap" d="M110 132 C110 175 108 200 106 250" fill="none"/>
@@ -52,7 +64,7 @@
     <button class="ac" id="ac" type="button">Goncayı aç</button>
 
     <div class="dilek-mesaji" id="dilek" hidden>
-      <h1>İyi ki doğdun,<br><span class="isim" id="basIsim">Gonca abla</span></h1>
+      <h1><span class="satir1">İyi ki doğdun,</span><br><span class="isim" id="basIsim">Gonca abla</span></h1>
       <p>Aşağıda sana hazırladığım bir şeyler var.</p>
       <a class="in" href="#geri-sayim">Devam et</a>
     </div>
