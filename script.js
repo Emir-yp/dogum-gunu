@@ -23,9 +23,9 @@ const AYAR = {
 
   // Zaman tüneli: istediğin kadar anı ekleyebilirsin, sırayla görünür.
   anilar: [
-    { yil: "Çocukluk", baslik: "İlk anılarımız", yazi: "Buraya kendi anınızı yaz." },
-    { yil: "Okul yılları", baslik: "Beraber büyüdüğümüz zamanlar", yazi: "Buraya kendi anınızı yaz." },
-    { yil: "Bugün", baslik: "Ve işte buradayız", yazi: "Hâlâ birbirimizin yanındayız." }
+    { yil: "Tatil keyfisi", baslik: "MADAGASKARRRRR", yazi: "baya korkunçtu ama ne kadar çok eğlenmiştik ya" },
+    { yil: "Bugün", baslik: "Doğum günü", yazi: "bak doğum günün işte daha niceee senelere inş canım yaa ölüyü bile diriltiriz :D" },
+    { yil: "Bugün", baslik: "Ve işte buradayız", yazi: "Hâlâ birbirimizin yanındayız ve herzaman kübra ablam,Şeyda ablam,sen,ben hep birbirimizi destekleyeceğiz." }
   ]
 };
 
