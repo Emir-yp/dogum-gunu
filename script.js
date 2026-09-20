@@ -13,14 +13,20 @@ const AYAR = {
   ],
 
   // Kilitli sürpriz sandık: kendi sorunu ve cevaplarını buraya yaz.
-  // cevaplar bir liste — kaç tane doğru cevap kabul etmek istiyorsan ekleyebilirsin.
   sandik: {
     soru: "En sevdiğim yemek ne (zor sorudur haaa)",
     cevaplar: ["döner", "tavuk döner", "katık", "zurna"],
     mesaj:
       "Bunu bulman biraz zamanını aldıysa bile önemli değil — çünkü asıl mesele aramızdaki o anıydı. " +
       "Seninle geçirdiğim her yıl, bu sandığın içindeki mesajdan daha değerli. İyi ki varsın."
-  }
+  },
+
+  // Zaman tüneli: istediğin kadar anı ekleyebilirsin, sırayla görünür.
+  anilar: [
+    { yil: "Çocukluk", baslik: "İlk anılarımız", yazi: "Buraya kendi anınızı yaz." },
+    { yil: "Okul yılları", baslik: "Beraber büyüdüğümüz zamanlar", yazi: "Buraya kendi anınızı yaz." },
+    { yil: "Bugün", baslik: "Ve işte buradayız", yazi: "Hâlâ birbirimizin yanındayız." }
+  ]
 };
 
 const sakin = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -150,6 +156,25 @@ const galeri = document.getElementById("galeri");
   });
 
 /* ————————————————————————————————
+   4b. Zaman tüneli
+———————————————————————————————— */
+const tunelListesi = document.getElementById("tunelListesi");
+
+AYAR.anilar.forEach(a => {
+  const madde = document.createElement("div");
+  madde.className = "tunel-madde";
+  madde.innerHTML = `
+    <span class="yil"></span>
+    <h3></h3>
+    <p></p>
+  `;
+  madde.querySelector(".yil").textContent = a.yil || "";
+  madde.querySelector("h3").textContent = a.baslik || "";
+  madde.querySelector("p").textContent = a.yazi || "";
+  tunelListesi.appendChild(madde);
+});
+
+/* ————————————————————————————————
    5. Kayarken beliren bölümler
 ———————————————————————————————— */
 const gozlemci = new IntersectionObserver(girdiler => {
@@ -179,20 +204,32 @@ function olcule(canvas) {
 
 function yapraklariKur() {
   olcule(yapCanvas);
-  const adet = window.innerWidth < 600 ? 14 : 26;
+  const adet = window.innerWidth < 600 ? 16 : 30;
   yapraklar = Array.from({ length: adet }, () => yeniYaprak(true));
 }
 
 function yeniYaprak(ilk) {
+  const kalp = Math.random() < 0.35;
   return {
     x: Math.random() * window.innerWidth,
     y: ilk ? Math.random() * window.innerHeight : -20,
-    b: 5 + Math.random() * 7,
-    hiz: 0.3 + Math.random() * 0.7,
+    b: kalp ? 6 + Math.random() * 5 : 5 + Math.random() * 7,
+    hiz: 0.25 + Math.random() * 0.6,
     salinim: Math.random() * Math.PI * 2,
     donme: Math.random() * Math.PI,
-    renk: Math.random() > 0.5 ? "rgba(224,105,122,0.55)" : "rgba(243,185,190,0.45)"
+    kalp,
+    renk: Math.random() > 0.5 ? "rgba(224,105,122,0.5)" : "rgba(243,185,190,0.4)"
   };
+}
+
+function kalpCiz(ctx, boyut) {
+  ctx.beginPath();
+  ctx.moveTo(0, boyut * 0.3);
+  ctx.bezierCurveTo(0, 0, -boyut, 0, -boyut, boyut * 0.35);
+  ctx.bezierCurveTo(-boyut, boyut * 0.75, 0, boyut, 0, boyut * 1.15);
+  ctx.bezierCurveTo(0, boyut, boyut, boyut * 0.75, boyut, boyut * 0.35);
+  ctx.bezierCurveTo(boyut, 0, 0, 0, 0, boyut * 0.3);
+  ctx.closePath();
 }
 
 function yapraklariCiz() {
@@ -207,9 +244,15 @@ function yapraklariCiz() {
     yapCtx.translate(y.x, y.y);
     yapCtx.rotate(y.donme);
     yapCtx.fillStyle = y.renk;
-    yapCtx.beginPath();
-    yapCtx.ellipse(0, 0, y.b, y.b * 0.55, 0, 0, Math.PI * 2);
-    yapCtx.fill();
+
+    if (y.kalp) {
+      kalpCiz(yapCtx, y.b * 0.5);
+      yapCtx.fill();
+    } else {
+      yapCtx.beginPath();
+      yapCtx.ellipse(0, 0, y.b, y.b * 0.55, 0, 0, Math.PI * 2);
+      yapCtx.fill();
+    }
     yapCtx.restore();
 
     if (y.y > window.innerHeight + 20) yapraklar[i] = yeniYaprak(false);
@@ -291,27 +334,39 @@ window.addEventListener("resize", () => {
 });
 
 /* ————————————————————————————————
-   7b. Havai fişek
+   7b. Havai fişek — roketli, uzun gösteri
 ———————————————————————————————— */
 const fisekCanvas = document.getElementById("havaifisek");
 const fisekCtx = fisekCanvas.getContext("2d");
 let fisekParcaciklar = [];
+let fisekRoketler = [];
 let fisekDonuyor = false;
+
+function fisekRoketFirlat(hedefX, hedefY) {
+  fisekRoketler.push({
+    x: hedefX + (Math.random() - 0.5) * 40,
+    y: window.innerHeight + 10,
+    hedefY,
+    vy: -(9 + Math.random() * 2.5),
+    iz: []
+  });
+}
 
 function fisekPatlat(x, y) {
   const renkler = ["#E0697A", "#F3B9BE", "#CFA24F", "#F6EFE6", "#8FD3C7", "#B98BD1"];
   const renk = renkler[Math.floor(Math.random() * renkler.length)];
-  const adet = 46;
+  const ikinciRenk = renkler[Math.floor(Math.random() * renkler.length)];
+  const adet = 58;
 
   for (let i = 0; i < adet; i++) {
     const aci = (Math.PI * 2 * i) / adet + Math.random() * 0.15;
-    const hiz = 1.8 + Math.random() * 3.2;
+    const hiz = 1.8 + Math.random() * 3.6;
     fisekParcaciklar.push({
       x, y,
       vx: Math.cos(aci) * hiz,
       vy: Math.sin(aci) * hiz,
       omur: 1,
-      renk
+      renk: Math.random() < 0.5 ? renk : ikinciRenk
     });
   }
 
@@ -321,27 +376,49 @@ function fisekPatlat(x, y) {
 function fisekCiz() {
   fisekCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+  fisekRoketler.forEach(r => {
+    r.iz.push({ x: r.x, y: r.y });
+    if (r.iz.length > 9) r.iz.shift();
+    r.y += r.vy;
+
+    r.iz.forEach((nokta, i) => {
+      fisekCtx.save();
+      fisekCtx.globalAlpha = (i / r.iz.length) * 0.6;
+      fisekCtx.fillStyle = "#F6EFE6";
+      fisekCtx.beginPath();
+      fisekCtx.arc(nokta.x, nokta.y, 1.7, 0, Math.PI * 2);
+      fisekCtx.fill();
+      fisekCtx.restore();
+    });
+
+    if (r.y <= r.hedefY) {
+      fisekPatlat(r.x, r.y);
+      r.patladi = true;
+    }
+  });
+  fisekRoketler = fisekRoketler.filter(r => !r.patladi);
+
   fisekParcaciklar.forEach(p => {
     p.vy += 0.045;
     p.vx *= 0.99;
     p.x += p.vx;
     p.y += p.vy;
-    p.omur -= 0.011;
+    p.omur -= 0.0085;
 
     fisekCtx.save();
     fisekCtx.globalAlpha = Math.max(p.omur, 0);
     fisekCtx.fillStyle = p.renk;
     fisekCtx.shadowColor = p.renk;
-    fisekCtx.shadowBlur = 6;
+    fisekCtx.shadowBlur = 7;
     fisekCtx.beginPath();
-    fisekCtx.arc(p.x, p.y, 2.3, 0, Math.PI * 2);
+    fisekCtx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
     fisekCtx.fill();
     fisekCtx.restore();
   });
 
   fisekParcaciklar = fisekParcaciklar.filter(p => p.omur > 0);
 
-  if (fisekParcaciklar.length) {
+  if (fisekParcaciklar.length || fisekRoketler.length) {
     requestAnimationFrame(fisekCiz);
   } else {
     fisekDonuyor = false;
@@ -350,17 +427,40 @@ function fisekCiz() {
 }
 
 function havaiFisekGosterisi() {
-  if (sakin) return;
+  const finale = document.getElementById("finaleYazi");
+
+  if (sakin) {
+    finale.hidden = false;
+    finale.classList.remove("goster");
+    void finale.offsetWidth;
+    finale.classList.add("goster");
+    return;
+  }
+
   olcule(fisekCanvas);
 
-  const patlamaSayisi = 5;
+  const patlamaSayisi = 12;
   for (let i = 0; i < patlamaSayisi; i++) {
     setTimeout(() => {
-      const x = window.innerWidth * (0.18 + Math.random() * 0.64);
-      const y = window.innerHeight * (0.14 + Math.random() * 0.34);
-      fisekPatlat(x, y);
-    }, i * 420);
+      const x = window.innerWidth * (0.12 + Math.random() * 0.76);
+      const y = window.innerHeight * (0.1 + Math.random() * 0.38);
+      fisekRoketFirlat(x, y);
+      if (i % 3 === 0) {
+        setTimeout(() => {
+          const x2 = window.innerWidth * (0.12 + Math.random() * 0.76);
+          const y2 = window.innerHeight * (0.1 + Math.random() * 0.38);
+          fisekRoketFirlat(x2, y2);
+        }, 140);
+      }
+    }, i * 460);
   }
+
+  setTimeout(() => {
+    finale.hidden = false;
+    finale.classList.remove("goster");
+    void finale.offsetWidth;
+    finale.classList.add("goster");
+  }, patlamaSayisi * 460 + 900);
 }
 
 /* ————————————————————————————————
@@ -565,8 +665,87 @@ sandikForm.addEventListener("submit", e => {
 });
 
 /* ————————————————————————————————
-   11. PDF / yazdırma
+   11. Misafir defteri
+———————————————————————————————— */
+const DEFTER_ANAHTARI = "gonca-defter";
+const defterForm = document.getElementById("defterForm");
+const defterIsim = document.getElementById("defterIsim");
+const defterNot = document.getElementById("defterNot");
+const defterListesi = document.getElementById("defterListesi");
+
+function defteriYukle() {
+  let kayitlar = [];
+  try {
+    kayitlar = JSON.parse(localStorage.getItem(DEFTER_ANAHTARI)) || [];
+  } catch { kayitlar = []; }
+
+  defterListesi.innerHTML = "";
+
+  if (!kayitlar.length) {
+    const bos = document.createElement("p");
+    bos.className = "defter-bos";
+    bos.textContent = "Henüz kimse yazmadı — ilk notu sen bırak.";
+    defterListesi.appendChild(bos);
+    return;
+  }
+
+  kayitlar.slice().reverse().forEach(k => {
+    const kart = document.createElement("div");
+    kart.className = "defter-notu";
+    kart.innerHTML = `<span class="kim"></span><p></p>`;
+    kart.querySelector(".kim").textContent = k.isim;
+    kart.querySelector("p").textContent = k.not;
+    defterListesi.appendChild(kart);
+  });
+}
+
+defterForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const isim = defterIsim.value.trim();
+  const not = defterNot.value.trim();
+  if (!isim || !not) return;
+
+  let kayitlar = [];
+  try {
+    kayitlar = JSON.parse(localStorage.getItem(DEFTER_ANAHTARI)) || [];
+  } catch { kayitlar = []; }
+
+  kayitlar.push({ isim, not });
+  localStorage.setItem(DEFTER_ANAHTARI, JSON.stringify(kayitlar));
+  defteriYukle();
+
+  defterIsim.value = "";
+  defterNot.value = "";
+});
+
+defteriYukle();
+
+/* ————————————————————————————————
+   12. PDF / yazdırma
 ———————————————————————————————— */
 document.getElementById("yazdirDugme").addEventListener("click", () => {
   window.print();
+});
+
+/* ————————————————————————————————
+   13. Sayfayı paylaş
+———————————————————————————————— */
+document.getElementById("paylasDugme").addEventListener("click", async () => {
+  const veri = {
+    title: "Gonca ablama",
+    text: "Sana bir doğum günü sürprizi hazırladım 🌹",
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    try { await navigator.share(veri); } catch {}
+  } else {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      const buton = document.getElementById("paylasDugme");
+      const eskiYazi = buton.textContent;
+      buton.textContent = "Link kopyalandı!";
+      setTimeout(() => (buton.textContent = eskiYazi), 1800);
+    } catch {}
+  }
 });
