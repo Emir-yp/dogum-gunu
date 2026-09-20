@@ -105,6 +105,7 @@
     </svg>
 
     <p class="pasta-mesaj" id="pastaMesaj" hidden>Dileğin tuttu. Kimseye söyleme.</p>
+    <p class="finale-yazi" id="finaleYazi" hidden>Nice yıllara, Gonca abla 🎉</p>
   </section>
 
   <!-- ——— 4. Mektup ——— -->
@@ -129,7 +130,14 @@
     <p class="imza">Seni çok seven kardeşin</p>
   </section>
 
-  <!-- ——— 5. Yıldızlara dilek ——— -->
+  <!-- ——— 5. Zaman tüneli ——— -->
+  <section class="tunel-bolum belirsin" id="zamanTuneli">
+    <h2>Aramızdaki zaman tüneli</h2>
+    <p class="yonerge">Yıllar içinde biriktirdiklerimizden birkaçı.</p>
+    <div class="tunel" id="tunelListesi"></div>
+  </section>
+
+  <!-- ——— 6. Yıldızlara dilek ——— -->
   <section class="yildiz-bolum belirsin" id="yildizlar">
     <h2>Gökyüzüne bir dilek bırak</h2>
     <p class="yonerge">Bir dilek yaz, gökyüzüne bırak. İstersen boş da bırakabilirsin, yine de yıldız kayar.</p>
@@ -146,7 +154,7 @@
     <ul class="dilek-listesi" id="dilekListesi" aria-live="polite"></ul>
   </section>
 
-  <!-- ——— 6. Sürpriz sandık ——— -->
+  <!-- ——— 7. Sürpriz sandık ——— -->
   <section class="sandik-bolum belirsin" id="sandik">
     <h2>Küçük bir sandık</h2>
 
@@ -164,13 +172,13 @@
     </div>
   </section>
 
-  <!-- ——— 7. Galeri ——— -->
+  <!-- ——— 8. Galeri ——— -->
   <section class="galeri-bolum belirsin">
     <h2>Birkaç kare</h2>
     <div class="galeri" id="galeri"></div>
   </section>
 
-  <!-- ——— 8. Sebepler ——— -->
+  <!-- ——— 9. Sebepler ——— -->
   <section class="sebepler belirsin">
     <h2>Sen olduğun için</h2>
     <ul>
@@ -183,11 +191,27 @@
     <p class="not">Bu maddeleri istediğin gibi değiştirebilirsin — ama bence hepsi doğru.</p>
   </section>
 
+  <!-- ——— 10. Misafir defteri ——— -->
+  <section class="defter-bolum belirsin" id="defter">
+    <h2>Sana yazanlar</h2>
+    <p class="yonerge">Bu telefonu/bilgisayarı kullanan herkes burada sana bir şey bırakabilir.</p>
+
+    <form class="defter-form" id="defterForm">
+      <input type="text" id="defterIsim" maxlength="24" placeholder="Adın" autocomplete="off" required>
+      <textarea id="defterNot" maxlength="180" placeholder="Kısa bir not..." required></textarea>
+      <button type="submit">Bırak</button>
+    </form>
+
+    <div class="defter-listesi" id="defterListesi" aria-live="polite"></div>
+    <p class="not">Not: buraya yazılanlar sadece bu cihazda görünür — sayfayı başka bir telefonla açan biri kendi notlarını görür.</p>
+  </section>
+
   <footer>
     <p>Bu sayfa Gonca abla için hazırlandı.</p>
     <div class="alt-butonlar">
-      <button class="tekrar" id="tekrar" type="button">Konfetiyi tekrar at</button>
+      <button class="tekrar" id="tekrar" type="button">Havai fişeği tekrar patlat</button>
       <button class="pdf" id="yazdirDugme" type="button">Anı olarak kaydet (PDF)</button>
+      <button class="paylas" id="paylasDugme" type="button">Sayfayı paylaş</button>
     </div>
   </footer>
 
