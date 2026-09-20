@@ -1,6 +1,3 @@
-/* ————————————————————————————————
-   AYARLAR — sadece burayı değiştir
-———————————————————————————————— */
 const AYAR = {
   isim: "Gonca abla",
 
@@ -29,9 +26,17 @@ const AYAR = {
 const sakin = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ————————————————————————————————
+   0. Sayfa yumuşak açılışı
+———————————————————————————————— */
+window.addEventListener("DOMContentLoaded", () => {
+  requestAnimationFrame(() => document.body.classList.add("yuklendi"));
+});
+
+/* ————————————————————————————————
    1. Gül açılışı
 ———————————————————————————————— */
 const gul = document.getElementById("gul");
+const gulAlani = document.getElementById("gulAlani");
 const acButon = document.getElementById("ac");
 const dilek = document.getElementById("dilek");
 document.getElementById("basIsim").textContent = AYAR.isim;
@@ -39,6 +44,7 @@ document.getElementById("basIsim").textContent = AYAR.isim;
 function goncayiAc() {
   if (gul.classList.contains("acildi")) return;
   gul.classList.add("acildi");
+  gulAlani.classList.add("acildi");
   acButon.hidden = true;
   setTimeout(() => {
     dilek.hidden = false;
@@ -106,6 +112,7 @@ mumlar.forEach(mum => {
       yonerge.textContent = "Hepsi söndü.";
       pastaMesaj.hidden = false;
       konfetiAt(150);
+      havaiFisekGosterisi();
     }
   };
 
@@ -271,13 +278,90 @@ function konfetiCiz() {
   }
 }
 
-document.getElementById("tekrar").addEventListener("click", () => konfetiAt(180));
+document.getElementById("tekrar").addEventListener("click", () => {
+  konfetiAt(180);
+  havaiFisekGosterisi();
+});
 
 window.addEventListener("resize", () => {
   if (!sakin) yapraklariKur();
   olcule(konCanvas);
+  olcule(fisekCanvas);
   gokyuzunuKur();
 });
+
+/* ————————————————————————————————
+   7b. Havai fişek
+———————————————————————————————— */
+const fisekCanvas = document.getElementById("havaifisek");
+const fisekCtx = fisekCanvas.getContext("2d");
+let fisekParcaciklar = [];
+let fisekDonuyor = false;
+
+function fisekPatlat(x, y) {
+  const renkler = ["#E0697A", "#F3B9BE", "#CFA24F", "#F6EFE6", "#8FD3C7", "#B98BD1"];
+  const renk = renkler[Math.floor(Math.random() * renkler.length)];
+  const adet = 46;
+
+  for (let i = 0; i < adet; i++) {
+    const aci = (Math.PI * 2 * i) / adet + Math.random() * 0.15;
+    const hiz = 1.8 + Math.random() * 3.2;
+    fisekParcaciklar.push({
+      x, y,
+      vx: Math.cos(aci) * hiz,
+      vy: Math.sin(aci) * hiz,
+      omur: 1,
+      renk
+    });
+  }
+
+  if (!fisekDonuyor) { fisekDonuyor = true; fisekCiz(); }
+}
+
+function fisekCiz() {
+  fisekCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+  fisekParcaciklar.forEach(p => {
+    p.vy += 0.045;
+    p.vx *= 0.99;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.omur -= 0.011;
+
+    fisekCtx.save();
+    fisekCtx.globalAlpha = Math.max(p.omur, 0);
+    fisekCtx.fillStyle = p.renk;
+    fisekCtx.shadowColor = p.renk;
+    fisekCtx.shadowBlur = 6;
+    fisekCtx.beginPath();
+    fisekCtx.arc(p.x, p.y, 2.3, 0, Math.PI * 2);
+    fisekCtx.fill();
+    fisekCtx.restore();
+  });
+
+  fisekParcaciklar = fisekParcaciklar.filter(p => p.omur > 0);
+
+  if (fisekParcaciklar.length) {
+    requestAnimationFrame(fisekCiz);
+  } else {
+    fisekDonuyor = false;
+    fisekCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  }
+}
+
+function havaiFisekGosterisi() {
+  if (sakin) return;
+  olcule(fisekCanvas);
+
+  const patlamaSayisi = 5;
+  for (let i = 0; i < patlamaSayisi; i++) {
+    setTimeout(() => {
+      const x = window.innerWidth * (0.18 + Math.random() * 0.64);
+      const y = window.innerHeight * (0.14 + Math.random() * 0.34);
+      fisekPatlat(x, y);
+    }, i * 420);
+  }
+}
 
 /* ————————————————————————————————
    8. Müzik — YouTube üzerinden
@@ -463,15 +547,15 @@ sandikForm.addEventListener("submit", e => {
   const girilen = sadelestir(sandikCevapKutu.value);
   const dogrular = AYAR.sandik.cevaplar.map(sadelestir);
 
-  console.log("girilen:", JSON.stringify(girilen));
-  console.log("kabul edilenler:", JSON.stringify(dogrular));
-
   if (girilen && dogrular.includes(girilen)) {
     sandikMesaj.textContent = AYAR.sandik.mesaj;
     sandikMesaj.hidden = false;
     sandikForm.hidden = true;
     sandikIpucu.textContent = "";
-    window.requestAnimationFrame(() => konfetiAt(140));
+    window.requestAnimationFrame(() => {
+      konfetiAt(140);
+      havaiFisekGosterisi();
+    });
   } else {
     sandikIpucu.textContent = "Olmadı, bir daha dene.";
     sandikKutu.classList.remove("titre");
