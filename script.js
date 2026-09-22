@@ -9,7 +9,7 @@ const AYAR = {
   fotograflar: [
     { src: "foto/HEQC7750.JPG", yazi: "Sen ve o meşhur bakış" },
     { src: "foto/IMG_0015.JPG", yazi: "Bayram sabahı" },
-    { src: "foto/IMG_1111.JPG", yazi: "En sevdiğim kare" }
+    { src: "foto/IMG_1111.JPG", yazi: "YA ABLA NE KADAR DENESEMDE BİR TÜRLÜ FOTOĞRAF KOYAMADIM NORmALDE BU KARELERDE FOTO OLACAKTI :(" }
   ],
 
   // Kilitli sürpriz sandık: kendi sorunu ve cevaplarını buraya yaz.
@@ -17,15 +17,15 @@ const AYAR = {
     soru: "En sevdiğim yemek ne (zor sorudur haaa)",
     cevaplar: ["döner", "tavuk döner", "katık", "zurna"],
     mesaj:
-      "Bunu bulman biraz zamanını aldıysa bile önemli değil — çünkü asıl mesele aramızdaki o anıydı. " +
+      "Bunu bulman biraz zamanını aldıysa bile önemli değil  çünkü asıl mesele aramızdaki o anıydı. " +
       "Seninle geçirdiğim her yıl, bu sandığın içindeki mesajdan daha değerli. İyi ki varsın."
   },
 
   // Zaman tüneli: istediğin kadar anı ekleyebilirsin, sırayla görünür.
   anilar: [
-    { yil: "Çocukluk", baslik: "İlk anılarımız", yazi: "Buraya kendi anınızı yaz." },
+    { yil: "TATİLKE", baslik: "MADAGASKARKE", yazi: "nE Korkmuştun heee madagastcarda bende çok çok havalı ve cesurdum :D." },
     { yil: "Okul yılları", baslik: "Beraber büyüdüğümüz zamanlar", yazi: "Buraya kendi anınızı yaz." },
-    { yil: "Bugün", baslik: "Ve işte buradayız", yazi: "Hâlâ birbirimizin yanındayız." }
+    { yil: "Bugün", baslik: "Ve işte buradayız", yazi: "Hâlâ birbirimizin yanındayız ve Şeyda ablam,Kübra ablam,sen ve ben asla birbirimizi bırakmayacağız önemli olan hep birbirimizi desteklememizdir.." }
   ]
 };
 
